@@ -69,6 +69,24 @@ python3 tests/smoke.py
 
 ## 上線
 
+### Netlify（替代部署）
+
+本儲存庫已加入 `netlify.toml`，Netlify 匯入時會自動使用以下設定：
+
+- 建置指令：`python3 scripts/build_site.py`
+- 發布目錄：`dist`
+- 不需要套件安裝、執行環境變數或應用程式密鑰。
+
+建置只會把 HTML、CSS、JavaScript 與網站圖示複製到 `dist/`，不包含測試、原始照片或本機瀏覽器回憶。可先於本機執行相同建置指令；`dist/` 也能直接上傳至 Netlify Drop。
+
+由 Netlify 網站登入帳號後，可用以下部署入口匯入公開儲存庫：
+
+https://app.netlify.com/start/deploy?repository=https://github.com/annycfl/cfl-assets
+
+此入口會建立站點及部署，可能要求 GitHub 授權或建立儲存庫副本；以頁面顯示為準。若想直接連結原有儲存庫，在 Netlify 選擇「Add new project → Import an existing project」，並選取 `annycfl/cfl-assets`。這些帳號授權必須由帳號持有人在 Netlify/GitHub 完成。取得 Netlify 的正式網址後，照片與回憶仍保存在各自瀏覽器。
+
+### GitHub Pages（既有部署）
+
 這是純靜態網站，沿用本儲存庫既有的 GitHub Pages 設定，由 `main` 分支的根目錄提供網站：
 
 **https://annycfl.github.io/cfl-assets/**

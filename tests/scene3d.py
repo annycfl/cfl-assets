@@ -29,6 +29,11 @@ with sync_playwright() as p:
                            arg=initial['frames'])
     moved = page.evaluate('memory3D.getState()')
     check(initial['positions'] != moved['positions'], 'inhabitants actually change position over time')
+    for role in ('male', 'female'):
+        first = next(c for c in initial['characters'] if c['role'] == role and c['island'] == 'home')
+        later = next(c for c in moved['characters'] if c['role'] == role and c['island'] == 'home')
+        check(first['position'] != later['position'] and first['gait'] != later['gait'],
+              f'{role} protagonist walks and animates arms/legs')
     page.locator('#toggle-life').click()
     page.wait_for_function('memory3D.getState().living === false')
     paused = page.evaluate('memory3D.getState()')

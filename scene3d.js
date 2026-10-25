@@ -462,27 +462,143 @@ function person(parent, look, phase, radius = 3.6) {
   const root = group(parent);
   root.userData.dynamic = true;
   const body = group(root);
-  const shirt = look === 0 ? 0x789b91 : 0xd99e8b;
-  cylinder(body, shirt, [0, 0.74, 0], [0.24, 0.55, 0.18]);
-  if (look === 1) cone(body, shirt, [0, 0.46, 0], [0.31, 0.4, 0.25]);
-  ball(body, colors.skin, [0, 1.25, 0], [0.25, 0.28, 0.24]);
-  ball(body, colors.hair, [0, 1.42, -0.03], [0.26, 0.16, 0.25]);
-  if (look === 1) ball(body, colors.hair, [0, 1.23, -0.16], [0.26, 0.29, 0.12]);
-  for (const x of [-0.09, 0.09])
-    ball(body, 0x514e45, [x, 1.28, 0.228], [0.026, 0.032, 0.02]);
+  // Reference-sheet outfits: him in sunglasses/cargo shorts, her in a cap/white trousers.
+  const woman = look === 1;
+  const ivory = 0xfff5e6,
+    peach = 0xf0d2ae,
+    charcoal = 0x383734;
+  const shirt = woman ? ivory : peach;
+  cylinder(body, shirt, [0, 0.77, 0], [0.25, 0.49, 0.19]);
+  box(body, woman ? 0xeee5d5 : 0xe8d6bb, [0, 0.52, 0], [0.44, 0.16, 0.32]);
+  // Oversized, readable chibi faces with ears, nose and smiles.
+  ball(body, colors.skin, [0, 1.25, 0.015], [0.33, 0.33, 0.3]);
+  for (const x of [-0.325, 0.325])
+    ball(body, colors.skin, [x, 1.24, 0], [0.075, 0.1, 0.07]);
+  ball(body, 0xe4ad88, [0, 1.21, 0.309], [0.035, 0.032, 0.028]);
+  const smile = mesh(
+    body,
+    new THREE.TorusGeometry(0.074, 0.009, 5, 12, Math.PI),
+    0x9f6654,
+    [0, 1.105, 0.296],
+  );
+  smile.rotation.z = Math.PI;
+  if (woman) {
+    ball(body, colors.hair, [0, 1.38, -0.07], [0.34, 0.24, 0.28]);
+    ball(body, colors.hair, [0, 1.08, -0.29], [0.19, 0.16, 0.15]);
+    for (const x of [-0.27, 0.27])
+      ball(body, colors.hair, [x, 1.22, -0.04], [0.07, 0.2, 0.12]);
+    // Baseball cap dome, curved visor, top button, seams and front patch.
+    mesh(
+      body,
+      new THREE.SphereGeometry(1, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+      0xead7b9,
+      [0, 1.44, -0.025],
+      [0.37, 0.255, 0.34],
+    );
+    ball(body, 0xf3e0c4, [0, 1.455, 0.25], [0.405, 0.035, 0.31]);
+    ball(body, 0xd7bf9d, [0, 1.706, -0.025], [0.045, 0.02, 0.045]);
+    box(body, 0xf8ead4, [0, 1.57, 0.29], [0.13, 0.1, 0.025]);
+    for (const x of [-0.1, 0.1])
+      beam(body, [x, 1.47, 0.3], [x * 0.6, 1.66, 0.12], 0.007, 0xd3bb9c);
+    const bang = ball(
+      body,
+      colors.hair,
+      [-0.12, 1.455, 0.234],
+      [0.2, 0.075, 0.075],
+    );
+    bang.rotation.z = -0.3;
+    for (const x of [-0.12, 0.12]) {
+      ball(body, 0x4f3425, [x, 1.285, 0.293], [0.082, 0.105, 0.027]);
+      ball(body, 0x171a17, [x, 1.28, 0.315], [0.05, 0.073, 0.015]);
+      ball(body, 0xffffff, [x - 0.02, 1.32, 0.332], [0.023, 0.027, 0.008]);
+      ball(body, 0xeeb19f, [x * 1.8, 1.19, 0.255], [0.045, 0.025, 0.018]);
+    }
+    // Striped sweater tied around the shoulders, with two hanging ends.
+    mesh(
+      body,
+      new THREE.TorusGeometry(0.23, 0.052, 7, 18),
+      ivory,
+      [0, 1.015, 0],
+    ).rotation.x = Math.PI / 2;
+    box(body, ivory, [0, 0.93, -0.205], [0.44, 0.28, 0.065]);
+    for (const x of [-0.13, 0.13]) {
+      const end = box(body, ivory, [x, 0.83, 0.222], [0.105, 0.43, 0.045]);
+      end.rotation.z = x;
+      for (let j = 0; j < 4; j++)
+        box(body, 0x78827f, [x, 0.67 + j * 0.1, 0.25], [0.108, 0.018, 0.012]);
+    }
+    for (let j = 0; j < 3; j++)
+      box(body, 0x78827f, [0, 0.84 + j * 0.09, -0.245], [0.44, 0.018, 0.012]);
+    ball(body, ivory, [0, 1.0, 0.237], [0.075, 0.06, 0.06]);
+    // Pink shoulder tote is attached to the torso, separate from the swinging arm.
+    box(body, 0xe5a0b6, [0.34, 0.64, -0.02], [0.24, 0.35, 0.31]);
+    ball(body, 0xeab0c2, [0.34, 0.48, -0.02], [0.12, 0.09, 0.155]);
+    beam(body, [0.28, 0.76, -0.14], [0.27, 1.0, -0.08], 0.022, 0xe5a0b6);
+    beam(body, [0.27, 1.0, -0.08], [0.36, 0.76, 0.12], 0.022, 0xe5a0b6);
+  } else {
+    ball(body, colors.hair, [0, 1.46, -0.025], [0.35, 0.19, 0.31]);
+    for (let i = 0; i < 8; i++) {
+      const t = i * Math.PI * 0.73;
+      const tuft = ball(
+        body,
+        0x554334,
+        [Math.cos(t) * 0.21, 1.58 + (i % 3) * 0.018, Math.sin(t) * 0.18],
+        [0.14, 0.075, 0.1],
+      );
+      tuft.rotation.z = t;
+    }
+    for (const x of [-0.14, 0.14]) {
+      ball(body, 0x24292a, [x, 1.29, 0.315], [0.127, 0.105, 0.035]);
+      const frame = mesh(
+        body,
+        new THREE.TorusGeometry(0.112, 0.016, 6, 20),
+        0x252725,
+        [x, 1.29, 0.335],
+        [1.13, 0.94, 1],
+      );
+      beam(body, [x, 1.35, 0.338], [x + 0.045, 1.38, 0.34], 0.009, 0x7c8583);
+    }
+    beam(body, [-0.035, 1.3, 0.34], [0.035, 1.3, 0.34], 0.018, 0x252725);
+    for (const x of [-0.27, 0.27])
+      beam(body, [x, 1.32, 0.3], [x * 1.13, 1.32, -0.05], 0.015, 0x252725);
+    // Black travel backpack, front pocket, zipper and shoulder straps.
+    ball(body, charcoal, [0, 0.78, -0.27], [0.28, 0.34, 0.16]);
+    box(body, 0x494744, [0, 0.66, -0.415], [0.39, 0.2, 0.07]);
+    box(body, 0x969083, [0, 0.74, -0.457], [0.34, 0.014, 0.012]);
+    for (const x of [-0.19, 0.19])
+      box(body, charcoal, [x, 0.81, 0.19], [0.055, 0.43, 0.045]);
+    for (const x of [-0.19, 0.19])
+      box(body, 0x999386, [x, 0.89, 0.22], [0.042, 0.035, 0.012]);
+    beam(body, [-0.1, 1.08, -0.28], [0.1, 1.08, -0.28], 0.025, charcoal);
+  }
   bake(body);
   const limbs = [];
   for (const side of [-1, 1]) {
-    const arm = group(root, side * 0.29, 0.96, 0);
-    cylinder(arm, shirt, [0, -0.22, 0], [0.08, 0.43, 0.085]);
+    const arm = group(root, side * 0.31, 0.96, 0);
+    cylinder(arm, shirt, [0, -0.11, 0], [0.105, 0.23, 0.1]);
+    cylinder(arm, colors.skin, [0, -0.33, 0], [0.07, 0.24, 0.075]);
     ball(arm, colors.skin, [0, -0.46, 0], [0.08, 0.095, 0.08]);
+    if (woman && side === -1) {
+      box(arm, charcoal, [0, -0.37, 0.078], [0.12, 0.095, 0.035]);
+      box(arm, 0x67777a, [0, -0.37, 0.1], [0.08, 0.065, 0.012]);
+    }
     bake(arm);
     limbs.push(arm);
   }
   for (const side of [-1, 1]) {
-    const leg = group(root, side * 0.115, 0.49, 0);
-    cylinder(leg, 0x7b8271, [0, -0.2, 0], [0.085, 0.39, 0.09]);
-    box(leg, 0xded3b6, [0, -0.41, 0.05], [0.17, 0.12, 0.28]);
+    const leg = group(root, side * 0.125, 0.49, 0);
+    if (woman) {
+      cylinder(leg, ivory, [0, -0.19, 0], [0.135, 0.4, 0.13]);
+      box(leg, 0xc8c7be, [0, -0.405, 0.065], [0.23, 0.12, 0.31]);
+    } else {
+      cylinder(leg, 0xf0dfc7, [0, -0.09, 0], [0.13, 0.23, 0.13]);
+      box(leg, 0xe3d0b5, [side * 0.105, -0.09, 0], [0.07, 0.14, 0.18]);
+      cylinder(leg, colors.skin, [0, -0.27, 0], [0.075, 0.18, 0.08]);
+      box(leg, 0xfff9ef, [0, -0.405, 0.065], [0.22, 0.13, 0.32]);
+      for (let j = 0; j < 3; j++)
+        box(leg, 0xb4b3aa, [0, -0.34, 0.095 + j * 0.04], [0.12, 0.01, 0.013]);
+    }
+    box(leg, 0xb8b5aa, [0, -0.46, 0.07], [0.23, 0.025, 0.32]);
     bake(leg);
     limbs.push(leg);
   }
@@ -490,6 +606,7 @@ function person(parent, look, phase, radius = 3.6) {
   actors.push({
     root,
     limbs,
+    role: woman ? "female" : "male",
     phase,
     radius,
     speed: 0.2,
@@ -1074,8 +1191,11 @@ function startScene() {
       actor.root.position.y +=
         Math.abs(Math.sin(lifeTime * 5 + actor.phase)) * 0.035;
       actor.limbs.forEach((limb, i) => {
+        const opposition = actor.kind === "person" && i >= 2 ? Math.PI : 0;
         limb.rotation.x =
-          Math.sin(lifeTime * 5 + actor.phase + (i % 2) * Math.PI) * 0.36;
+          Math.sin(
+            lifeTime * 5 + actor.phase + (i % 2) * Math.PI + opposition,
+          ) * (actor.kind === "person" ? (i < 2 ? 0.43 : 0.52) : 0.36);
       });
     }
     for (const mechanism of mechanisms) {
@@ -1116,6 +1236,14 @@ function startScene() {
       camera: camera.position.toArray(),
       target: controls.target.toArray(),
       positions: actors.map((actor) => actor.root.position.toArray()),
+      characters: actors
+        .filter((actor) => actor.kind === "person")
+        .map((actor) => ({
+          role: actor.role,
+          island: actor.island,
+          position: actor.root.position.toArray(),
+          gait: actor.limbs.map((limb) => limb.rotation.x),
+        })),
       drawCalls: renderer.info.render.calls,
       triangles: renderer.info.render.triangles,
       islandCenters: [...islands.values()].map((item) => {

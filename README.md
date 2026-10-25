@@ -69,6 +69,26 @@ python3 tests/smoke.py
 
 ## 上線
 
+### Cloudflare Pages（目前選擇的部署平台）
+
+建置指令為 `python3 scripts/build_site.py`，輸出目錄為 `dist/`，不需要安裝網站套件。`wrangler.jsonc` 定義 Pages 專案設定；尚未取得 Cloudflare 回傳的部署網址之前，不代表站點已建立。
+
+若要由命令列部署，需在雲端環境設定中安全提供：
+
+- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 帳戶的識別碼。
+- `CLOUDFLARE_API_TOKEN`：限定該帳戶、具有 **Account → Cloudflare Pages → Edit** 權限的 API Token。不要把 Token 貼入聊天、命令列參數或儲存庫。
+- 網路允許 `api.cloudflare.com` 及 `*.pages.dev`，供部署與部署後驗證使用。
+
+然後執行：
+
+```bash
+python3 scripts/deploy_cloudflare.py
+```
+
+此工具會檢查專案是否存在、必要時建立 Pages 專案，再透過固定版本 Wrangler 4.152.0 上傳四個公開檔案至 `main` 正式分支。使用 npm 的正常 HTTPS 下載與完整性驗證，不會寫入密鑰檔案。既有同名專案若使用其他正式分支，工具會停止，以免誤部署。
+
+也可由帳戶持有人在 Cloudflare 控制台選擇 **Workers & Pages → Create → Pages → Upload assets**，將 `dist/` 內容或網站 ZIP 上傳；這種方式不用把 API Token 提供給本開發環境。
+
 ### Netlify（替代部署）
 
 本儲存庫已加入 `netlify.toml`，Netlify 匯入時會自動使用以下設定：

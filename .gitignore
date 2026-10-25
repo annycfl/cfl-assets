@@ -1,3 +1,4 @@
 dist/
 .netlify/
+.wrangler/
 __pycache__/

@@ -1,26 +1,201 @@
 <!doctype html>
 <html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>全總數位工作台</title>
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/annycfl/cfl-assets/ecbfddcf12c05846517ef4c58f2ec25a0caa78fc/logo_favicon.png">
-<link rel="icon" href="https://raw.githubusercontent.com/annycfl/cfl-assets/ecbfddcf12c05846517ef4c58f2ec25a0caa78fc/logo_favicon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="全總數位工作台">
-<script>
-var APP_URL = "https://script.google.com/a/macros/cfl.org.tw/s/AKfycbyCcqEvVpMhidQIpdEZ3ABP7yMcHSZSP7ef2bJ25WU87mh-eSWXSE9Kp-eoUveqdHU/exec";
-if (window.navigator.standalone) { location.replace(APP_URL); }
-</script>
-<style>
-body{font-family:-apple-system,sans-serif;text-align:center;padding-top:20vh;color:#003087}
-a.btn{display:inline-block;margin-top:24px;padding:14px 32px;background:#003087;color:#fff;border-radius:8px;text-decoration:none;font-size:18px}
-</style>
-</head>
-<body>
-<img src="https://raw.githubusercontent.com/annycfl/cfl-assets/ecbfddcf12c05846517ef4c58f2ec25a0caa78fc/logo_favicon.png" width="96" height="96" style="border-radius:20px">
-<h2>全總數位工作台</h2>
-<p>用 Safari「分享 → 加入主畫面」<br>就能用這個圖示開啟平台</p>
-<a class="btn" href="https://script.google.com/macros/s/AKfycbyCcqEvVpMhidQIpdEZ3ABP7yMcHSZSP7ef2bJ25WU87mh-eSWXSE9Kp-eoUveqdHU/exec">進入平台</a>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#edf3ed" />
+    <meta
+      name="description"
+      content="從我們的家出發，把旅行、日常、哞哞、花花與泡泡，收藏成一座座回憶島嶼。"
+    />
+    <title>我們的家 — 回憶群島</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <a class="brand" href="./" aria-label="我們的家，回到群島首頁"
+        ><span class="brand-mark" aria-hidden="true">⌂<i>♥</i></span
+        ><span>我們的家<small>OUR LITTLE ARCHIPELAGO</small></span></a
+      >
+      <nav aria-label="主要導覽">
+        <button class="nav-link active" id="map-nav">回憶群島</button
+        ><button class="nav-link" id="passport-open">
+          我們的旅行護照 <span>↗</span>
+        </button>
+      </nav>
+      <button class="write-button" id="write-memory">
+        <span aria-hidden="true">＋</span> 寫下回憶
+      </button>
+    </header>
+    <main id="map-section" class="map-section">
+      <div class="intro">
+        <div class="eyebrow"><span></span> TWO PEOPLE, A WORLD OF MEMORIES</div>
+        <h1>把日子，<br />過成一座座<span>小島。</span></h1>
+        <p>
+          世界很大，幸好身邊一直是你。<br />從我們的家出發，收藏每一次心動。
+        </p>
+        <div class="filters" role="group" aria-label="篩選島嶼">
+          <button class="selected" data-filter="all" aria-pressed="true">
+            所有島嶼 <span>11</span></button
+          ><button data-filter="travel" aria-pressed="false">一起旅行</button
+          ><button data-filter="life" aria-pressed="false">我們的日常</button>
+        </div>
+        <span class="map-hint"
+          ><span aria-hidden="true">✧</span> 點島讀故事 · 拖曳海面探索更多</span
+        >
+        <button class="directory-link" id="directory-open">
+          查看所有島嶼 <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+      <div
+        class="map-viewport"
+        id="map-viewport"
+        aria-label="可拖曳的互動回憶地圖"
+      >
+        <div class="map-world" id="map-world">
+          <svg
+            id="island-map"
+            viewBox="0 0 1440 900"
+            xmlns="http://www.w3.org/2000/svg"
+            role="group"
+            aria-label="我們的十一座回憶島嶼"
+          ></svg>
+        </div>
+      </div>
+      <aside class="map-note">
+        <span class="note-star">✳</span>
+        <div>
+          <strong>每一座島，都有我們。</strong>
+          <p>2 個人 · 哞哞與花花 · 即將抵達的泡泡</p>
+        </div>
+      </aside>
+      <div class="map-controls">
+        <button id="zoom-in" aria-label="放大地圖">＋</button
+        ><button id="zoom-out" aria-label="縮小地圖">−</button><span></span
+        ><button id="reset-map" aria-label="重設地圖位置與縮放">⌖</button>
+      </div>
+      <div class="compass" aria-hidden="true">
+        <span>N</span
+        ><svg width="44" height="44" viewBox="0 0 44 44">
+          <path d="M22 3 29 22 22 41 15 22Z" fill="#fffaf0" stroke="#73958b" />
+          <path d="M22 3 22 22 15 22Z" fill="#73958b" />
+          <path d="M22 41 22 22 29 22Z" fill="#b5c9bd" />
+        </svg>
+      </div>
+      <span class="ocean-label" aria-hidden="true"
+        >THE SEA OF OUR LITTLE DAYS</span
+      >
+    </main>
+    <footer class="footer">
+      <span><i></i> 我們的故事，持續更新中</span
+      ><span class="footer-center">以愛為座標，日常為航線。</span
+      ><button id="backup-open">回憶備份 <span>↗</span></button>
+    </footer>
+    <dialog
+      id="memory-dialog"
+      class="memory-dialog"
+      aria-labelledby="memory-title"
+    >
+      <button class="close-button" data-close aria-label="關閉回憶">×</button>
+      <div class="memory-art" id="memory-art"></div>
+      <div class="memory-content">
+        <div class="eyebrow" id="memory-kicker"></div>
+        <h2 id="memory-title"></h2>
+        <p class="memory-tagline" id="memory-tagline"></p>
+        <div class="memory-date" id="memory-date"></div>
+        <img
+          id="memory-photo"
+          class="memory-photo"
+          alt="這座島嶼收藏的回憶照片"
+          hidden
+        />
+        <p class="memory-story" id="memory-story"></p>
+        <div class="empty-memory" id="empty-memory">
+          <span>✎</span>
+          <p>這座島，等你們的故事靠岸。</p>
+          <small>加上一張照片，或寫下不想忘記的小事。</small>
+        </div>
+        <button class="primary-button" id="edit-memory">
+          ＋ 收藏這座島的回憶
+        </button>
+        <form id="memory-form" hidden>
+          <label>島嶼名稱<input name="name" maxlength="30" required /></label>
+          <label
+            >值得記住的日子<input
+              type="date"
+              name="date"
+              min="1900-01-01"
+              max="2200-12-31"
+          /></label>
+          <label
+            >我們的故事<textarea
+              name="story"
+              rows="5"
+              maxlength="6000"
+              placeholder="那一天，我們……"
+            ></textarea>
+          </label>
+          <label class="photo-label"
+            >收藏一張照片<input
+              name="photo"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+            /><small>JPG、PNG 或 WebP，上傳後只保存在此瀏覽器。</small></label
+          >
+          <label class="remove-photo" id="remove-photo-label" hidden
+            ><input type="checkbox" name="removePhoto" /> 移除目前照片</label
+          >
+          <div class="form-actions">
+            <button class="secondary-button" type="button" id="cancel-edit">
+              取消</button
+            ><button type="submit" class="primary-button">儲存回憶 ♡</button>
+          </div>
+          <p class="form-error" id="form-error" role="alert"></p>
+        </form>
+        <p class="privacy-note">
+          小小提醒：回憶儲存在這個瀏覽器，記得定期匯出備份。
+        </p>
+      </div>
+    </dialog>
+    <dialog
+      id="passport-dialog"
+      class="passport-dialog"
+      aria-labelledby="passport-title"
+    >
+      <button class="close-button" data-close aria-label="關閉旅行護照">
+        ×
+      </button>
+      <div class="eyebrow">OUR JOURNEY TOGETHER</div>
+      <h2 id="passport-title">我們的旅行護照</h2>
+      <p class="dialog-subtitle">走過的地方，都是愛的形狀。</p>
+      <div id="passport-grid" class="passport-grid"></div>
+      <p class="passport-foot">7 座旅行島嶼，還有好多地方要和你一起去。</p>
+    </dialog>
+    <dialog
+      id="backup-dialog"
+      class="backup-dialog"
+      aria-labelledby="backup-title"
+    >
+      <button class="close-button" data-close aria-label="關閉備份視窗">
+        ×
+      </button>
+      <div class="eyebrow">KEEP OUR MEMORIES SAFE</div>
+      <h2 id="backup-title">替回憶，留一份底稿。</h2>
+      <p>
+        照片和故事保存在這個瀏覽器。清除瀏覽資料或更換裝置前，請先匯出備份；之後就能在另一個裝置匯入。
+      </p>
+      <button class="primary-button" id="export-memory">↓ 匯出所有回憶</button
+      ><label class="secondary-button import-button" tabindex="0"
+        >↑ 匯入回憶備份<input
+          id="import-memory"
+          type="file"
+          accept="application/json,.json"
+      /></label>
+      <p class="backup-warning">匯入會合併島嶼回憶；同一座島以備份內容取代。</p>
+      <p id="backup-status" role="status"></p>
+    </dialog>
+    <div class="toast" id="toast" role="status"></div>
+  </body>
 </html>

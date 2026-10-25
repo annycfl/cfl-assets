@@ -10,8 +10,12 @@
     />
     <title>我們的家 — 回憶群島</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./app.js" defer></script>
+    <link rel="stylesheet" href="./style.css?v=3d-1" />
+    <script src="./app.js?v=3d-1" defer></script>
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three/three.module.js" } }
+    </script>
+    <script type="module" src="./scene3d.js?v=3d-1"></script>
   </head>
   <body>
     <header class="header">
@@ -43,16 +47,23 @@
           ><button data-filter="life" aria-pressed="false">我們的日常</button>
         </div>
         <span class="map-hint"
-          ><span aria-hidden="true">✧</span> 點島讀故事 · 拖曳海面探索更多</span
+          ><span aria-hidden="true">✧</span> 拖曳旋轉 · 滾輪拉近 ·
+          點模型靠近</span
         >
         <button class="directory-link" id="directory-open">
           查看所有島嶼 <span aria-hidden="true">↗</span>
         </button>
+        <div class="scene-actions" id="scene-actions" hidden>
+          <button id="toggle-life" aria-pressed="true">
+            <i></i><span>島民散步中</span>
+          </button>
+          <button id="toggle-orbit" aria-pressed="false">↻ 環遊視角</button>
+        </div>
       </div>
       <div
         class="map-viewport"
         id="map-viewport"
-        aria-label="可拖曳的互動回憶地圖"
+        aria-label="可旋轉、縮放的 3D 回憶群島"
       >
         <div class="map-world" id="map-world">
           <svg
@@ -64,6 +75,9 @@
           ></svg>
         </div>
       </div>
+      <p class="scene-status" id="scene-status" role="status">
+        正在佈置我們的 3D 小世界…
+      </p>
       <aside class="map-note">
         <span class="note-star">✳</span>
         <div>

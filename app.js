@@ -323,6 +323,7 @@ function renderMap() {
     map.append(group);
   });
   setFilter(activeFilter);
+  document.dispatchEvent(new Event("memory-data-change"));
 }
 
 let activeFilter = "all";
@@ -341,6 +342,9 @@ function setFilter(filter) {
         filter !== "all" && byId(group.dataset.id).type !== filter,
       ),
     );
+  document.dispatchEvent(
+    new CustomEvent("memory-filter-change", { detail: filter }),
+  );
 }
 document
   .querySelectorAll("[data-filter]")
@@ -376,6 +380,7 @@ function resetMap() {
   pan = { x: 0, y: 0 };
   setFilter("all");
   transformMap();
+  document.dispatchEvent(new Event("memory-map-reset"));
 }
 $("#zoom-in").addEventListener("click", () => changeZoom(0.2));
 $("#zoom-out").addEventListener("click", () => changeZoom(-0.2));
@@ -383,6 +388,7 @@ $("#reset-map").addEventListener("click", resetMap);
 $("#map-nav").addEventListener("click", resetMap);
 const viewport = $("#map-viewport");
 viewport.addEventListener("pointerdown", (event) => {
+  if (window.memory3DActive) return;
   if (event.button !== 0) return;
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   if (pointers.size === 2) {
@@ -445,6 +451,7 @@ window.addEventListener("blur", () => {
 viewport.addEventListener(
   "wheel",
   (event) => {
+    if (window.memory3DActive) return;
     if (event.ctrlKey || event.metaKey) {
       event.preventDefault();
       changeZoom(event.deltaY > 0 ? -0.1 : 0.1);
@@ -817,3 +824,10 @@ storageReady.then(() => {
   renderMap();
   if (storageError) toast("瀏覽器暫時無法儲存回憶；地圖仍可探索。");
 });
+window.memoryIslands = {
+  islands: ISLANDS,
+  openIsland,
+  getName: currentName,
+  getFilter: () => activeFilter,
+};
+document.dispatchEvent(new Event("memory-islands-ready"));

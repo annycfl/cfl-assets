@@ -14,7 +14,7 @@ import tempfile
 import urllib.error
 import urllib.request
 
-from build_site import build
+from build_site import build, PUBLIC_FILES
 
 ROOT = Path(__file__).resolve().parents[1]
 WRANGLER_VERSION = "4.152.0"
@@ -82,7 +82,7 @@ def main():
         "pages", "deploy", "dist", "--project-name", args.project,
         "--branch", "main", "--commit-dirty=true",
     ]
-    print("Uploading the four public website assets…", flush=True)
+    print(f"Uploading {len(PUBLIC_FILES)} public website assets…", flush=True)
     subprocess.run(command, cwd=ROOT, env=environment, check=True)
     print("Cloudflare upload completed. Verify the deployment URL printed above.", flush=True)
 

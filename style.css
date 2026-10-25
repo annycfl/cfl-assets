@@ -1007,3 +1007,217 @@ input[type="file"] {
   color: #355c50;
   border-color: #6e876c;
 }
+/* The WebGL canvas and projected, keyboard-accessible island labels. */
+.is-3d {
+  background: #d4e7e2;
+}
+.is-3d .map-world {
+  display: none;
+}
+.is-3d .map-viewport {
+  cursor: grab;
+}
+.is-3d .intro {
+  z-index: 4;
+}
+.is-3d .ocean-label {
+  display: none;
+}
+#island-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  outline: none;
+}
+.island-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.island-3d-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 0;
+  background: none;
+  padding: 8px 9px;
+  pointer-events: auto;
+  text-align: center;
+  white-space: nowrap;
+  will-change: transform;
+  transition: opacity 0.25s;
+  color: #3c6656;
+  line-height: 1.2;
+  filter: drop-shadow(0 2px 5px #41665912);
+}
+.island-3d-label strong {
+  display: block;
+  border: 1px solid #d4dec9;
+  background: #fffdf4ef;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font:
+    600 15px/1.3 "Noto Serif TC",
+    "Songti TC",
+    serif;
+  letter-spacing: 2px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.island-3d-label small {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 1.3px;
+  color: #698377;
+  margin-top: 6px;
+  text-shadow: 0 1px 2px #f2f9ea;
+}
+.island-3d-label.label-home strong {
+  background: #4f775b;
+  border-color: #4f775b;
+  color: #fffdf0;
+  font-size: 18px;
+}
+.island-3d-label:hover strong,
+.island-3d-label:focus-visible strong {
+  background: #e7eddb;
+  border-color: #9bac85;
+}
+.island-3d-label.label-home:hover strong {
+  background: #426c4e;
+}
+.scene-actions {
+  pointer-events: auto;
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+.scene-actions button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #b5cbbb;
+  border-radius: 20px;
+  background: #f7faf0e8;
+  font-size: 10px;
+  color: #61826b;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px #65836608;
+}
+.scene-actions i {
+  width: 6px;
+  height: 6px;
+  background: #84a378;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #84a37819;
+}
+.scene-actions .paused i {
+  background: #b8a77f;
+}
+.scene-actions button[aria-pressed="true"]:last-child {
+  background: #dce9d6;
+}
+.scene-status {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-size: 12px;
+  background: #fffdf5e8;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 3px 20px #46664b12;
+  text-align: center;
+  max-width: 85%;
+  line-height: 1.7;
+}
+.is-3d .map-hint {
+  color: #779385;
+}
+.is-3d .intro:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -30px -20px -25px -30px;
+  background: radial-gradient(
+    ellipse at 20% 40%,
+    #edf5ebed 10%,
+    #e5f0e59c 48%,
+    transparent 75%
+  );
+  pointer-events: none;
+}
+.is-3d .map-note {
+  background: #fffef4e8;
+}
+.is-3d .compass {
+  z-index: 2;
+}
+@media (max-width: 700px) {
+  .is-3d .intro {
+    top: 24px;
+  }
+  .is-3d .intro h1 {
+    font-size: 28px;
+    line-height: 1.4;
+    margin-top: 12px;
+  }
+  .is-3d .intro > p {
+    font-size: 9px;
+    line-height: 1.7;
+  }
+  .is-3d .filters {
+    margin-top: 12px;
+  }
+  .is-3d .map-hint {
+    margin-top: 10px;
+    font-size: 8px;
+  }
+  .is-3d .directory-link {
+    margin-top: 4px;
+  }
+  .scene-actions {
+    margin-top: 10px;
+    gap: 6px;
+  }
+  .scene-actions button {
+    font-size: 9px;
+    padding: 7px 10px;
+  }
+  .island-3d-label strong {
+    font-size: 12px;
+    padding: 5px 9px;
+    letter-spacing: 1px;
+  }
+  .island-3d-label small {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .island-3d-label.label-home strong {
+    font-size: 15px;
+  }
+  .is-3d .intro:before {
+    inset: -35px -20px -16px -40px;
+    background: radial-gradient(
+      ellipse at 10% 20%,
+      #e7f1e6fc 12%,
+      #e7f1e6bf 54%,
+      transparent 82%
+    );
+  }
+  .scene-status {
+    bottom: 140px;
+    font-size: 11px;
+  }
+}
+.is-3d .intro:before {
+  border-radius: 40%;
+  filter: blur(10px);
+}
